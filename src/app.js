@@ -7,6 +7,7 @@ const app = express();
 
 const adminRoute = require("./routes/admin/index.route");
 const variableConfig = require("./config/variable");
+const errorHandler = require("./middlewares/errrorHandler");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,6 +26,14 @@ app.set("views", path.join(__dirname, "views"));
 // routes
 app.use(`/${variableConfig.pathAdmin}`, adminRoute);
 
+// Route test lỗi
+app.get("/error", (req, res, next) => {
+	const err = new Error("Test error nè!");
+	err.status = 400;
+	next(err);
+});
+
 // catch errors
+app.use(errorHandler);
 
 module.exports = app;
