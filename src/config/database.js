@@ -8,6 +8,8 @@ const dbName = "wn-tour-website";
 
 const mongoURI = `mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?authSource=admin`;
 
+const mongoAtlasURI = process.env.MONGO_ATLAS_URI;
+
 class Database {
 	constructor() {
 		this.connect();
@@ -15,7 +17,7 @@ class Database {
 
 	async connect() {
 		try {
-			await mongoose.connect(mongoURI);
+			await mongoose.connect(mongoAtlasURI);
 			console.log("DB connection successful !");
 		} catch (error) {
 			console.log("DB connection failed !", error);
