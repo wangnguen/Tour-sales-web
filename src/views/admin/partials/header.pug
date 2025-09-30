@@ -1,1 +1,23 @@
-h1 Header
+header.header
+  .inner-logo
+    a(href=`/${pathAdmin}/dashboard`)
+      span WNTravel
+      span Admin
+  .inner-wrap
+    .inner-notify
+      img(src="/admin/assets/images/icon-bell.svg" alt="")
+      span 0
+    .inner-dark-mode
+      i.fa-solid.fa-moon(title="Chuyển sang chế độ tối")
+    .inner-account
+      .inner-avatar
+        img(src="" alt="Quang")
+      .inner-text
+        .inner-name Quang
+        .inner-role Quản trị viên
+      .account-dropdown
+        a.dropdown-item(href="/profile") Hồ sơ cá nhân
+        a.dropdown-item(href="/change-password") Đổi mật khẩu
+        a.dropdown-item(href="/logout") Đăng xuất
+  button.inner-button-menu
+    i.fa-solid.fa-bars

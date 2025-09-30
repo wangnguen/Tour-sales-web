@@ -16,6 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan("dev"));
 
+// Tạo biến cho các view
+app.locals.pathAdmin = variableConfig.pathAdmin;
+
+// Biến toàn cục
+global.pathAdmin = variableConfig.pathAdmin;
+
 // static files
 app.use(express.static(path.join(__dirname, "..", "public")));
 
