@@ -1,5 +1,6 @@
 const {
 	loginPostService,
+	registerPostService,
 } = require("../../services/admin/account-admin.service");
 const catchError = require("../../utils/catchError");
 
@@ -57,6 +58,17 @@ const loginPost = catchError(async (req, res) => {
 	res.json({ code: "success", message: result.message });
 });
 
+const registerPost = catchError(async (req, res) => {
+	const { fullName, email, password } = req.body;
+	const result = await registerPostService({ fullName, email, password });
+
+	if (result.code == "error") {
+		return res.status(400).json(result);
+	}
+
+	res.json({ code: "success", message: result.message });
+});
+
 module.exports = {
 	login,
 	register,
@@ -65,4 +77,5 @@ module.exports = {
 	otpPassword,
 	resetPassword,
 	loginPost,
+	registerPost,
 };

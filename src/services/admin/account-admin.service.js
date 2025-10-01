@@ -2,6 +2,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const AccountAdmin = require("../../models/admin-account.model");
 
+const saltRounds = 10;
+
+const hashPassword = async (plainText) => {
+	return await bcrypt.hash(plainText, saltRounds);
+};
+
 const loginPostService = async ({ email, password, rememberPassword }) => {
 	const existAccount = await AccountAdmin.findOne({ email, deleted: false });
 	if (!existAccount) {
@@ -34,4 +40,35 @@ const loginPostService = async ({ email, password, rememberPassword }) => {
 	};
 };
 
-module.exports = { loginPostService };
+const registerPostService = async ({ fullName, email, password }) => {
+	const existAccount = await AccountAdmin.findOne({
+		email: email,
+	});
+
+	if (existAccount) {
+		return {
+			code: "error",
+			message: "Email đã tồn tại trong hệ thống !",
+		};
+	}
+
+	// Mã hoá mật khẩu
+	const hashedPassword = await hashPassword(password);
+
+	// Tạo tài khoản mới
+	const newAccount = new AccountAdmin({
+		fullName,
+		email,
+		password: hashedPassword,
+		status: "initial",
+	});
+
+	await newAccount.save();
+
+	return {
+		code: "success",
+		message: "Đăng ký tài khoản thành công !",
+	};
+};
+
+module.exports = { loginPostService, registerPostService };

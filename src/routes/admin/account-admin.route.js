@@ -17,4 +17,10 @@ router.post(
 	accountAdminController.loginPost,
 );
 
+router.post(
+	"/register",
+	accountAdminValidation.registerPost,
+	accountAdminController.registerPost,
+);
+
 module.exports = router;
