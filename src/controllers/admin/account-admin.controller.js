@@ -1,3 +1,8 @@
+const {
+	loginPostService,
+} = require("../../services/admin/account-admin.service");
+const catchError = require("../../utils/catchError");
+
 const login = (req, res) => {
 	res.render("admin/pages/login", {
 		titlePage: "Đăng nhập",
@@ -34,6 +39,24 @@ const resetPassword = (req, res) => {
 	});
 };
 
+const loginPost = catchError(async (req, res) => {
+	const { email, password, rememberPassword } = req.body;
+
+	const result = await loginPostService({ email, password, rememberPassword });
+
+	if (result.code == "error") {
+		return res.json(result);
+	}
+
+	// Lưu token vào cookie
+	res.cookie("tokenAdmin", result.tokenAdmin, {
+		maxAge: rememberPassword ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
+		httpOnly: true,
+		sameSite: "strict",
+	});
+	res.json({ code: "success", message: result.message });
+});
+
 module.exports = {
 	login,
 	register,
@@ -41,4 +64,5 @@ module.exports = {
 	forgotPassword,
 	otpPassword,
 	resetPassword,
+	loginPost,
 };
